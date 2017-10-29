@@ -76,9 +76,14 @@ static inline void parse(char *str)
 	} else if (cmd("*")) {
 		ss(2);
 		switch (args()) {
-		case ARG_VV:
-			puts("For vector multiplication use `cross` or `dot` commands");
+		case ARG_VV: {
+			// this is neither the dot nor cross product
+			double ax, ay, az;
+			double bx, by, bz;
+			if (stack_pop_vec(&bx, &by, &bz) && stack_pop_vec(&ax, &ay, &az))
+				stack_push_vec(ax * bx, ay * by, az * bz);
 			break;
+		}
 		case ARG_SS: {
 			double a, b;
 			if (stack_pop_scaler(&b) && stack_pop_scaler(&a))
@@ -101,9 +106,14 @@ static inline void parse(char *str)
 	} else if (cmd("/")) {
 		ss(2);
 		switch (args()) {
-		case ARG_VV:
-			puts("Tried to divide two vectors");
+		case ARG_VV: {
+			// probably not the behavior the user is expecting
+			double ax, ay, az;
+			double bx, by, bz;
+			if (stack_pop_vec(&bx, &by, &bz) && stack_pop_vec(&ax, &ay, &az))
+				stack_push_vec(ax / bx, ay / by, az / bz);
 			break;
+		}
 		case ARG_SS: {
 			double a, b;
 			if (stack_pop_scaler(&b) && stack_pop_scaler(&a))
@@ -160,6 +170,12 @@ static inline void parse(char *str)
 			double x, y, z;
 			if (stack_pop_vec(&x, &y, &z))
 				stack_push_vec(-x, -y, -z);
+		}
+	} else if (cmd("pow")) {
+		ss(2);
+		double a, b;
+		if (stack_pop_scaler(&b) && stack_pop_scaler(&a)) {
+			stack_push_scaler(pow(a, b));
 		}
 	} else if (cmd("cos")) {
 		mimick(cos);
