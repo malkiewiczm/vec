@@ -177,6 +177,20 @@ static inline void parse(char *str)
 		if (stack_pop_scaler(&b) && stack_pop_scaler(&a)) {
 			stack_push_scaler(pow(a, b));
 		}
+	} else if (cmd("quadeq")) {
+		ss(1);
+		double a, b, c;
+		if (stack_pop_vec(&a, &b, &c)) {
+			double det = b * b - 4 * a * c;
+			if (det < 0) {
+				puts("No real solutions");
+				return;
+			}
+			double den = 2 * a;
+			double x0 = -b / den;
+			double x1 = sqrt(det) / den;
+			stack_push_vec(x0 + x1, x0 - x1, 0);
+		}
 	} else if (cmd("cos")) {
 		mimick(cos);
 	} else if (cmd("sin")) {
