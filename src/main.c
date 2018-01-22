@@ -205,9 +205,9 @@ static inline void parse(char *str)
 		mimick(atan);
 	} else if (cmd("sqrt")) {
 		mimick(sqrt);
-	} else if (cmd("rad")) {
+	} else if (cmd("torad")) {
 		mimick(0.017453292519943 * );
-	} else if (cmd("deg")) {
+	} else if (cmd("todeg")) {
 		mimick(57.295779513082 * );
 	} else if (cmd("atan2")) {
 		ss(2);
