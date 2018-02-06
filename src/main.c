@@ -252,26 +252,18 @@ static inline void parse(char *str)
 	}
 }
 
-static int max(int a, int b)
+int main(int argc, char **argv)
 {
-	if (a > b)
-		return a;
-	else
-		return b;
-}
-
-int main(void)
-{
+	if (argc > 1) {
+		for (int iter = 1; iter < argc; ++iter) {
+			parse(argv[iter]);
+		}
+		stack_print();
+		return 0;
+	}
 	while (true) {
 		char buf[100];
-		if (stack_ptr) {
-			for (int i = max(1, stack_ptr - 10); i <= stack_ptr; i++) {
-				printf("[%d] ", i);
-				stack_print_at(i);
-			}
-		} else {
-			puts("(empty)");
-		}
+		stack_print();
 		printf("> ");
 		fgets(buf, 100, stdin);
 		if (buf[0] == '\0') {

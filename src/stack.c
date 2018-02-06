@@ -80,6 +80,20 @@ void stack_print_at(int n)
 	}
 }
 
+#define max(a, b)((a > b) ? a : b)
+
+void stack_print()
+{
+	if (stack_ptr) {
+		for (int i = max(1, stack_ptr - 10); i <= stack_ptr; i++) {
+			printf("[%d] ", i);
+			stack_print_at(i);
+		}
+	} else {
+		puts("(empty)");
+	}
+}
+
 bool stack_push(int n)
 {
 	if (n <= 0) {
