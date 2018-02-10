@@ -171,6 +171,16 @@ static inline void parse(char *str)
 			if (stack_pop_vec(&x, &y, &z))
 				stack_push_vec(-x, -y, -z);
 		}
+	} else if (cmd("inv")) {
+		ss(1);
+		if (stack_arg_scaler(0)) {
+			if (stack_pop_scaler(&value))
+				stack_push_scaler(1 / value);
+		} else {
+			double x, y, z;
+			if (stack_pop_vec(&x, &y, &z))
+				stack_push_vec(1 / x, 1 / y, 1 / z);
+		}
 	} else if (cmd("pow")) {
 		ss(2);
 		double a, b;
