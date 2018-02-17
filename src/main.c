@@ -275,7 +275,10 @@ int main(int argc, char **argv)
 		char buf[100];
 		stack_print();
 		printf("> ");
-		fgets(buf, 100, stdin);
+		if (fgets(buf, 100, stdin) == NULL) {
+			puts("EOF detected");
+			return 0;
+		}
 		if (buf[0] == '\0') {
 			putchar('\n');
 			return 0;
