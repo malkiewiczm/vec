@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "stack.h"
 
-#define STACK_SIZE 100
-
 struct StackVal {
 	bool is_scaler;
 	double x;

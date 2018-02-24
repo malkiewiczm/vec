@@ -10,6 +10,7 @@
 #define ARG_VV 0
 
 #define cmd(a)(strcmp(str, a) == 0)
+
 #define ss(n) do {								\
 		if (stack_ptr < n) {					\
 			puts("Not enough stack space");		\
@@ -38,6 +39,13 @@ static inline void parse(char *str)
 	} else if (cmd("pop")) {
 		ss(1);
 		stack_ptr--;
+	} else if (cmd("restore")) {
+		// this could give some garbage values
+		stack_ptr++;
+		if (stack_ptr == STACK_SIZE) {
+			stack_ptr--;
+			puts("Stack overflow");
+		}
 	} else if (cmd("push")) {
 		ss(1);
 		double n;
@@ -249,8 +257,24 @@ static inline void parse(char *str)
 		double x, y, z;
 		if (stack_pop_vec(&x, &y, &z))
 			stack_push_scaler(z);
+	} else if (cmd("unvec")) {
+		ss(1);
+		double x, y, z;
+		if (stack_pop_vec(&x, &y, &z)) {
+			stack_push_scaler(x);			
+			stack_push_scaler(y);
+			stack_push_scaler(z);
+		}
 	} else if (cmd("pi")) {
 		stack_push_scaler(3.1415926535898);
+	} else if (cmd("e")) {
+		stack_push_scaler(2.71828);
+	} else if (cmd("ee")) {
+		stack_push_scaler(1.60217733e-19);
+	} else if (cmd("me")) {
+		stack_push_scaler(9.10938356e-31);
+	} else if (cmd("mp")) {
+		stack_push_scaler(1.672621898e-27);
 	} else if (cmd("ivec")) {
 		stack_push_vec(1, 0, 0);
 	} else if (cmd("jvec")) {

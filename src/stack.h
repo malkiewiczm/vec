@@ -1,5 +1,8 @@
 #include <stdbool.h>
 
+#define STACK_SIZE 100
+
+
 void stack_push_scaler(double);
 void stack_push_vec(double, double, double);
 bool stack_pop_scaler(double *);
