@@ -4,6 +4,10 @@
 #include <math.h>
 #include "stack.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #define ARG_SS 3
 #define ARG_VS 1
 #define ARG_SV 2
@@ -209,6 +213,31 @@ static inline void parse(char *str)
 			double x1 = sqrt(det) / den;
 			stack_push_vec(x0 + x1, x0 - x1, 0);
 		}
+	} else if (cmd("cp")) {
+#ifdef _WIN32
+		if (! stack_ptr) {
+			puts("Stack empty, nothing to copy");
+			return;
+		}
+		static char *clipboard_text = NULL;
+		static const size_t clipboard_size = sizeof(char) * 100;
+		if (clipboard_text == NULL)
+			clipboard_text = malloc(clipboard_size);
+		stack_print_str_at(clipboard_text, stack_ptr);
+		HGLOBAL clipboard_handle = GlobalAlloc(GMEM_MOVEABLE, clipboard_size);;
+		memcpy(GlobalLock(clipboard_handle), clipboard_text, clipboard_size);
+		GlobalUnlock(clipboard_handle);
+		if (! OpenClipboard(NULL)) {
+			puts("Clipboard failed (OpenClipboard)");
+			return;
+		}
+		EmptyClipboard();
+		if (SetClipboardData(CF_TEXT, clipboard_handle) == NULL)
+			puts("Clipboard failed (SetClipboardData)");
+		CloseClipboard();
+#else
+		puts("Clipboard not supported");
+#endif
 	} else if (cmd("cos")) {
 		mimick(cos);
 	} else if (cmd("sin")) {

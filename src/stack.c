@@ -78,6 +78,15 @@ void stack_print_at(int n)
 	}
 }
 
+void stack_print_str_at(char *buf, int n)
+{
+	if (stack[n].is_scaler) {
+		sprintf(buf, "%.15lf\n", stack[n].x);
+	} else {
+		sprintf(buf, "(%lf, %lf, %lf)\n", stack[n].x, stack[n].y, stack[n].z);
+	}
+}
+
 #define max(a, b)((a > b) ? a : b)
 
 void stack_print()
