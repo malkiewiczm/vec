@@ -173,6 +173,14 @@ static inline void parse(char *str)
 			break;
 		}
 		}
+	} else if (cmd("++")) {
+		ss(1);
+		double sum = 0;
+		double s;
+		while (stack_pop_scaler(&s))
+				sum += s;
+		stack_push_scaler(sum);
+
 	} else if (cmd("-")) {
 		ss(1);
 		if (stack_arg_scaler(0)) {

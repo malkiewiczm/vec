@@ -15,7 +15,6 @@ void stack_push_scaler(double value)
 {
 	stack_ptr++;
 	if (stack_ptr == STACK_SIZE) {
-		puts("Stack overflow");
 		stack_ptr--;
 		return;
 	}
@@ -27,7 +26,6 @@ void stack_push_vec(double x, double y, double z)
 {
 	stack_ptr++;
 	if (stack_ptr == STACK_SIZE) {
-		puts("Stack overflow");
 		stack_ptr--;
 		return;
 	}
@@ -40,7 +38,6 @@ void stack_push_vec(double x, double y, double z)
 bool stack_pop_scaler(double *value)
 {
 	if (! stack_ptr) {
-		puts("Stack underflow");
 		return false;
 	}
 	if (! stack[stack_ptr].is_scaler) {
@@ -55,7 +52,6 @@ bool stack_pop_scaler(double *value)
 bool stack_pop_vec(double *x, double *y, double *z)
 {
 	if (! stack_ptr) {
-		puts("Stack underflow");
 		return false;
 	}
 	if (stack[stack_ptr].is_scaler) {
