@@ -207,6 +207,12 @@ static inline void parse(char *str)
 		if (stack_pop_scaler(&b) && stack_pop_scaler(&a)) {
 			stack_push_scaler(pow(a, b));
 		}
+	} else if (cmd("polar")) {
+		ss(1);
+		double a;
+		if (stack_pop_scaler(&a)) {
+			stack_push_vec(cos(a), sin(a), 0);
+		}
 	} else if (cmd("quadeq")) {
 		ss(1);
 		double a, b, c;
