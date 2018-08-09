@@ -4,7 +4,10 @@
 #include <math.h>
 #include "stack.h"
 
-#ifdef _WIN32
+#ifdef __linux__
+#include <unistd.h>
+#include <sys/types.h>
+#elif WIN32
 #include <windows.h>
 #endif
 
@@ -178,7 +181,7 @@ static inline void parse(char *str)
 		double sum = 0;
 		double s;
 		while (stack_pop_scaler(&s))
-				sum += s;
+			sum += s;
 		stack_push_scaler(sum);
 
 	} else if (cmd("-")) {
@@ -228,7 +231,6 @@ static inline void parse(char *str)
 			stack_push_vec(x0 + x1, x0 - x1, 0);
 		}
 	} else if (cmd("cp")) {
-#ifdef _WIN32
 		if (! stack_ptr) {
 			puts("Stack empty, nothing to copy");
 			return;
@@ -238,7 +240,33 @@ static inline void parse(char *str)
 		if (clipboard_text == NULL)
 			clipboard_text = malloc(clipboard_size);
 		stack_print_str_at(clipboard_text, stack_ptr);
-		HGLOBAL clipboard_handle = GlobalAlloc(GMEM_MOVEABLE, clipboard_size);;
+#ifdef __linux__
+		int fd[2];
+		if (pipe(fd)) {
+			puts("Clipboard failed (pipe)");
+			return;
+		}
+		pid_t pid = fork();
+		if (pid == -1) {
+			puts("Clipboard failed (fork)");
+		} else if (pid == 0) {
+			// child closes write pipe
+			close(fd[1]);
+			dup2(fd[0], 0);
+			close(fd[0]);
+			execl("/bin/sh", "sh", "-c", "xclip -selection clipboard", NULL);
+			puts("Clipboard failed (in child process, execve failed)");
+			exit(0);
+		} else {
+			// parent closes read pipe
+			close(fd[0]);
+			int text_len = strlen(clipboard_text);
+			if (write(fd[1], clipboard_text, text_len) != text_len)
+				puts("Clipboard failed (could not write to pipe)");
+			close(fd[1]);
+		}
+#elif WIN32
+		HGLOBAL clipboard_handle = GlobalAlloc(GMEM_MOVEABLE, clipboard_size);
 		memcpy(GlobalLock(clipboard_handle), clipboard_text, clipboard_size);
 		GlobalUnlock(clipboard_handle);
 		if (! OpenClipboard(NULL)) {
