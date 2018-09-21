@@ -176,6 +176,34 @@ static inline void parse(char *str)
 			break;
 		}
 		}
+	} else if (cmd("%")) {
+		ss(2);
+		switch (args()) {
+		case ARG_VV: {
+			double ax, ay, az, bx, by, bz;
+			if (stack_pop_vec(&bx, &by, &bz) && stack_pop_vec(&ax, &ay, &az))
+				stack_push_vec(fmod(ax,  bx), fmod(ay, by), fmod(az, bz));
+			break;
+		}
+		case ARG_SS: {
+			double a, b;
+			if (stack_pop_scaler(&b) && stack_pop_scaler(&a))
+				stack_push_scaler(fmod(a, b));
+			break;
+		}
+		case ARG_VS: {
+			double x, y, z, s;
+			if (stack_pop_scaler(&s) && stack_pop_vec(&x, &y, &z))
+				stack_push_vec(fmod(x, s), fmod(y, s), fmod(z, s));
+			break;
+		}
+		case ARG_SV: {
+			double x, y, z, s;
+			if (stack_pop_vec(&x, &y, &z) && stack_pop_scaler(&s))
+				stack_push_vec(fmod(s, x), fmod(s, y), fmod(s, z));
+			break;
+		}
+		}
 	} else if (cmd("++")) {
 		ss(1);
 		double sum = 0;
