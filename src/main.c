@@ -7,7 +7,7 @@
 #ifdef __linux__
 #include <unistd.h>
 #include <sys/types.h>
-#elif WIN32
+#elif _WIN32
 #include <windows.h>
 #endif
 
@@ -293,7 +293,7 @@ static inline void parse(char *str)
 				puts("Clipboard failed (could not write to pipe)");
 			close(fd[1]);
 		}
-#elif WIN32
+#elif _WIN32
 		HGLOBAL clipboard_handle = GlobalAlloc(GMEM_MOVEABLE, clipboard_size);
 		memcpy(GlobalLock(clipboard_handle), clipboard_text, clipboard_size);
 		GlobalUnlock(clipboard_handle);
