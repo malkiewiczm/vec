@@ -326,6 +326,8 @@ static inline void parse(char *str)
 		mimick(log);
 	} else if (cmd("log10")) {
 		mimick(log10);
+	} else if (cmd("log2")) {
+		mimick(log2);
 	} else if (cmd("torad")) {
 		mimick(0.017453292519943 * );
 	} else if (cmd("todeg")) {
