@@ -88,6 +88,11 @@ static inline void parse(char *str)
 		double ax, ay, az;;
 		if (stack_pop_vec(&ax, &ay, &az))
 			stack_push_scaler(ax * ax + ay * ay + az * az);
+	} else if (cmd("mag")) {
+		ss(1);
+		double ax, ay, az;;
+		if (stack_pop_vec(&ax, &ay, &az))
+			stack_push_scaler(sqrt(ax * ax + ay * ay + az * az));
 	} else if (cmd("*")) {
 		ss(2);
 		switch (args()) {
