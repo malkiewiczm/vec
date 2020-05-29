@@ -382,37 +382,37 @@ static void parse(const std::string &s)
 	}
 	cmd("polar") {
 		const double angle = stack.pop_scaler();
-		stack.push(std::cos(angle), std::sin(angle ), 0);
+		stack.push(std::cos(angle), std::sin(angle), 0);
 	}
 	cmd("cos") {
-		mimic_prefix1(cos);
+		mimic_prefix1(std::cos);
 	}
 	cmd("sin") {
-		mimic_prefix1(sin);
+		mimic_prefix1(std::sin);
 	}
 	cmd("tan") {
-		mimic_prefix1(tan);
+		mimic_prefix1(std::tan);
 	}
 	cmd("asin") {
-		mimic_prefix1(asin);
+		mimic_prefix1(std::asin);
 	}
 	cmd("acos") {
-		mimic_prefix1(acos);
+		mimic_prefix1(std::acos);
 	}
 	cmd("atan") {
-		mimic_prefix1(atan);
+		mimic_prefix1(std::atan);
 	}
 	cmd("sqrt") {
-		mimic_prefix1(sqrt);
+		mimic_prefix1(std::sqrt);
 	}
 	cmd("log") {
-		mimic_prefix1(log);
+		mimic_prefix1(std::log);
 	}
 	cmd("log10") {
-		mimic_prefix1(log10);
+		mimic_prefix1(std::log10);
 	}
 	cmd("log2") {
-		mimic_prefix1(log2);
+		mimic_prefix1(std::log2);
 	}
 	cmd("torad") {
 		mimic_prefix1(0.017453292519943 * );
@@ -423,8 +423,14 @@ static void parse(const std::string &s)
 	cmd("atan2") {
 		mimic_prefix2(std::atan2);
 	}
-	cmd("int") {
-		mimic_prefix1(static_cast<int>);
+	cmd("floor") {
+		mimic_prefix1(std::floor);
+	}
+	cmd("ceil") {
+		mimic_prefix1(std::ceil);
+	}
+	cmd("round") {
+		mimic_prefix1(std::round);
 	}
 	cmd("x") {
 		stack.push(stack.pop_number().x);
