@@ -1,14 +1,14 @@
-CC = gcc
-CFLAGS = -std=c99 -Wall -Wextra -Wpedantic -Wshadow -Wcast-qual	\
--Wstrict-prototypes -Wmissing-prototypes -Werror -O2
-LDLIBS = -lm
-TARGET = ./bin/vec
-OBJECTS = ./src/main.o ./src/stack.o
+MAKEFLAGS += Rr
+CXX = g++
+CXXFLAGS = -std=c++11 -Wall -Wextra -Wpedantic -Wshadow -O2
+TARGET = vec
 
 .PHONY: all clean install
 
-all: $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(TARGET) $(LDLIBS)
+all: $(TARGET)
+
+$(TARGET): main.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
 
 clean:
 	rm -f $(OBJECTS)
