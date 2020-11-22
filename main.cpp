@@ -476,6 +476,13 @@ static void parse(const std::string &s)
 	cmd("kvec") {
 		stack.push(0, 0, 1);
 	}
+	cmd("quadeq") {
+		const Number eq = stack.pop_number();
+		const double disc = eq.y*eq.y - 4.*eq.x*eq.z;
+		const double left = -eq.y / (2.*eq.x);
+		const double right = std::sqrt(disc) / (2.*eq.x);
+		stack.push(left - right, left + right, 0.);
+	}
 	else {
 		std::cout << "command not found" << std::endl;
 	}
